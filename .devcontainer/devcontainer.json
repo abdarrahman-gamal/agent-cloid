@@ -1,30 +1,22 @@
 {
-  "name": "OpenCode Webtop GUI",
-  "image": "lscr.io/linuxserver/webtop:ubuntu-xfce",
-
-  // تحويل خيارات --security-opt و --shm-size
-  "runArgs": [
-    "--security-opt", "seccomp=unconfined",
-    "--shm-size=2gb"
-  ],
-
-  // تحويل المتغيرات البيئية -e
-  "containerEnv": {
-    "PUID": "1000",
-    "PGID": "1000",
-    "TZ": "Africa/Cairo"
+  "name": "OpenCode AI - GitHub Codespaces",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-22.04",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {},
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "password": "codespace"
+    }
   },
 
-  // تحويل البورت -p 3000:3000
-  "forwardPorts": [3000],
-
+  "forwardPorts": [6080],
   "portsAttributes": {
-    "3000": {
-      "label": "OpenCode Desktop (Webtop)",
+    "6080": {
+      "label": "OpenCode Desktop GUI",
       "onAutoForward": "openBrowser"
     }
   },
 
-  // تثبيت OpenCode تلقائياً داخل الـ Webtop عند التشغيل
-  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y wget && wget -O opencode.deb https://opencode.ai/download/stable/linux-x64-deb && sudo apt-get install -y ./opencode.deb && rm opencode.deb"
+  // تم تحسين الأوامر لضمان تثبيت كل المكتبات الناقصة وتجهيز التطبيق
+  "postCreateCommand": "sudo apt-get update && sudo apt-get install -y wget libnss3 libnspr4 libatk1.0-0 libatk-bridge2.0-0 libcups2 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libasound2 && sudo npm install -g opencode-ai && wget -O opencode.deb https://opencode.ai/download/stable/linux-x64-deb && sudo apt-get install -y ./opencode.deb && rm opencode.deb"
 }
