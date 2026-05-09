@@ -1,1 +1,4 @@
-read
+'''
+docker start opencode-gui
+
+'''
